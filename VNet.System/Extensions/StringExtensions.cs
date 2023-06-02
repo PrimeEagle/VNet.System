@@ -1,6 +1,6 @@
 ﻿// https://bitbucket.org/hasullivan/fast-wildcard-matching/src/master/FastWildcardMatching/WildcardMatch.cs
 
-namespace VNet.System
+namespace VNet.System.Extensions
 {
     public static class StringExtensions
     {
@@ -53,13 +53,13 @@ namespace VNet.System
             switch (matchCase)
             {
                 case 0:
-                    isLike = (text == wildcardString);
+                    isLike = text == wildcardString;
                     break;
 
                 case 1:
                     for (int i = 0; i < text.Length; i++)
                     {
-                        if ((word[i] != filter[i]) && filter[i] != '?')
+                        if (word[i] != filter[i] && filter[i] != '?')
                         {
                             isLike = false;
                         }
@@ -139,7 +139,7 @@ namespace VNet.System
                         for (int j = 0; j < reversedPatterns[i].Length; j++)
                         {
 
-                            if ((reversedPatterns[i].Length - 1 - j) > (reversedWord.Length - 1 - reversedWordIndex))
+                            if (reversedPatterns[i].Length - 1 - j > reversedWord.Length - 1 - reversedWordIndex)
                             {
                                 return false;
                             }
@@ -231,7 +231,7 @@ namespace VNet.System
                         for (int j = 0; j < reversedPatterns[i].Length; j++)
                         {
 
-                            if ((reversedPatterns[i].Length - 1 - j) > (reversedWord.Length - 1 - reversedWordIndex))
+                            if (reversedPatterns[i].Length - 1 - j > reversedWord.Length - 1 - reversedWordIndex)
                             {
                                 return false;
                             }

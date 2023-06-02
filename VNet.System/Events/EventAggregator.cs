@@ -1,6 +1,6 @@
-﻿using global::System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
-namespace VNet.System
+namespace VNet.System.Events
 {
     public class EventAggregator
     {

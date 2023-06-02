@@ -1,4 +1,4 @@
-﻿namespace VNet.System
+﻿namespace VNet.System.Extensions
 {
     public static class DoubleExtensions
     {

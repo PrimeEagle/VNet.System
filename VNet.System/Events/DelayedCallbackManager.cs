@@ -1,4 +1,4 @@
-﻿namespace VNet.System
+﻿namespace VNet.System.Events
 {
     public class DelayedCallbackManager
     {
@@ -42,7 +42,7 @@
                     var callbackInfo = _callbacks[i];
 
                     _callbacks.RemoveAt(i);
-                    if(callbackInfo.Repeating)
+                    if (callbackInfo.Repeating)
                     {
                         AddCallback(callbackInfo.CallbackMethod, callbackInfo.TimeToCall, callbackInfo.Repeating);
                     }
