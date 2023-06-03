@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Numerics;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -19,6 +20,23 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     public override int GetHashCode()
     {
         return _value.GetHashCode();
+    }
+
+
+    public NormalizedDouble(decimal value)
+    {
+        if (value < 0 || value > 1)
+            throw new ArgumentOutOfRangeException(nameof(value), "Value must be between 0 and 1.");
+
+        _value = (double) value;
+    }
+
+    public NormalizedDouble(float value)
+    {
+        if (value < 0 || value > 1)
+            throw new ArgumentOutOfRangeException(nameof(value), "Value must be between 0 and 1.");
+
+        _value = (double) value;
     }
 
     public NormalizedDouble(double value)
@@ -104,11 +122,6 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
         }
     }
 
-    public static NormalizedDouble operator +(NormalizedDouble left, NormalizedDouble right)
-    {
-        return new NormalizedDouble(left._value + right._value);
-    }
-
     public static bool operator ==(NormalizedDouble left, NormalizedDouble right)
     {
         return left._value == right._value;
@@ -137,6 +150,66 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     public static bool operator <=(NormalizedDouble left, NormalizedDouble right)
     {
         return left._value <= right._value;
+    }
+
+    public static bool operator ==(double left, NormalizedDouble right)
+    {
+        return left == right._value;
+    }
+
+    public static bool operator !=(double left, NormalizedDouble right)
+    {
+        return left != right._value;
+    }
+
+    public static bool operator >(double left, NormalizedDouble right)
+    {
+        return left > right._value;
+    }
+
+    public static bool operator >=(double left, NormalizedDouble right)
+    {
+        return left >= right._value;
+    }
+
+    public static bool operator <(double left, NormalizedDouble right)
+    {
+        return left < right._value;
+    }
+
+    public static bool operator <=(double left, NormalizedDouble right)
+    {
+        return left <= right._value;
+    }
+
+    public static bool operator ==(NormalizedDouble left, double right)
+    {
+        return left._value == right;
+    }
+
+    public static bool operator !=(NormalizedDouble left, double right)
+    {
+        return left._value != right;
+    }
+
+    public static bool operator >(NormalizedDouble left, double right)
+    {
+        return left._value > right;
+    }
+
+    public static bool operator >=(NormalizedDouble left, double right)
+    {
+        return left._value >= right;
+    }
+
+    public static bool operator <(NormalizedDouble left, double right)
+    {
+        return left._value < right;
+    }
+
+    public static bool operator <=(NormalizedDouble left, double right)
+    {
+        return left._value <= right;
     }
 
     public static NormalizedDouble operator --(NormalizedDouble value)
@@ -181,6 +254,41 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
         return new NormalizedDouble(result);
     }
 
+    public static NormalizedDouble operator -(double left, NormalizedDouble right)
+    {
+        var result = left - right._value;
+        result = Math.Max(0, Math.Min(1, result));
+        return new NormalizedDouble(result);
+    }
+
+    public static NormalizedDouble operator -(NormalizedDouble left, double right)
+    {
+        var result = left._value - right;
+        result = Math.Max(0, Math.Min(1, result));
+        return new NormalizedDouble(result);
+    }
+
+    public static NormalizedDouble operator +(NormalizedDouble left, NormalizedDouble right)
+    {
+        var result = left._value + right._value;
+        result = Math.Max(0, Math.Min(1, result));
+        return new NormalizedDouble(result);
+    }
+
+    public static NormalizedDouble operator +(double left, NormalizedDouble right)
+    {
+        var result = left + right._value;
+        result = Math.Max(0, Math.Min(1, result));
+        return new NormalizedDouble(result);
+    }
+
+    public static NormalizedDouble operator +(NormalizedDouble left, double right)
+    {
+        var result = left._value + right;
+        result = Math.Max(0, Math.Min(1, result));
+        return new NormalizedDouble(result);
+    }
+
     public static NormalizedDouble operator -(NormalizedDouble value)
     {
         var result = -value._value;
@@ -200,6 +308,106 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
         var result = Math.Abs(value._value);
         result = Math.Max(0, Math.Min(1, result));
         return new NormalizedDouble(result);
+    }
+
+    public static implicit operator double(NormalizedDouble d)
+    {
+        return d._value;
+    }
+
+    public static implicit operator decimal(NormalizedDouble d)
+    {
+        return (decimal) d._value;
+    }
+
+    public static implicit operator float(NormalizedDouble d)
+    {
+        return (float) d._value;
+    }
+
+    public static implicit operator int(NormalizedDouble d)
+    {
+        return (int) d._value;
+    }
+
+    public static implicit operator uint(NormalizedDouble d)
+    {
+        return (uint) d._value;
+    }
+
+    public static implicit operator long(NormalizedDouble d)
+    {
+        return (long) d._value;
+    }
+
+    public static implicit operator ulong(NormalizedDouble d)
+    {
+        return (ulong) d._value;
+    }
+
+    public static implicit operator short(NormalizedDouble d)
+    {
+        return (short) d._value;
+    }
+
+    public static implicit operator ushort(NormalizedDouble d)
+    {
+        return (ushort) d._value;
+    }
+
+    public static implicit operator byte(NormalizedDouble d)
+    {
+        return (byte) d._value;
+    }
+
+    public static implicit operator NormalizedDouble(double d)
+    {
+        return new NormalizedDouble(d);
+    }
+
+    public static implicit operator NormalizedDouble(decimal d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(float d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(int d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(uint d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(long d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(ulong d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(short d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(ushort d)
+    {
+        return new NormalizedDouble((double) d);
+    }
+
+    public static implicit operator NormalizedDouble(byte d)
+    {
+        return new NormalizedDouble((double) d);
     }
 
     public static bool IsCanonical(NormalizedDouble value)
@@ -327,7 +535,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     {
         try
         {
-            result = new NormalizedDouble((double)(object)value);
+            result = new NormalizedDouble((double) (object) value);
             return true;
         }
         catch
@@ -341,7 +549,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     {
         try
         {
-            result = new NormalizedDouble((double)(object)value);
+            result = new NormalizedDouble((double) (object) value);
             return true;
         }
         catch
@@ -355,7 +563,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     {
         try
         {
-            result = new NormalizedDouble((double)(object)value);
+            result = new NormalizedDouble((double) (object) value);
             return true;
         }
         catch
@@ -369,7 +577,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     {
         try
         {
-            result = (TOther)(object)value._value;
+            result = (TOther) (object) value._value;
             return true;
         }
         catch
@@ -383,7 +591,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     {
         try
         {
-            result = (TOther)(object)value._value;
+            result = (TOther) (object) value._value;
             return true;
         }
         catch
@@ -397,7 +605,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
     {
         try
         {
-            result = (TOther)(object)value._value;
+            result = (TOther) (object) value._value;
             return true;
         }
         catch
@@ -409,7 +617,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
 
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out NormalizedDouble result)
     {
-        if (double.TryParse(s.ToString(), style, provider, out double value))
+        if (double.TryParse(s.ToString(), style, provider, out var value))
         {
             value = Math.Max(0, Math.Min(1, value));
             result = new NormalizedDouble(value);
@@ -424,7 +632,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
 
     public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider, out NormalizedDouble result)
     {
-        if (double.TryParse(s, style, provider, out double value))
+        if (double.TryParse(s, style, provider, out var value))
         {
             result = new NormalizedDouble(value);
             return true;
@@ -439,7 +647,7 @@ public readonly struct NormalizedDouble : IComparable<NormalizedDouble>, IFormat
 
     public static NormalizedDouble AdditiveIdentity => new();
     public static NormalizedDouble MultiplicativeIdentity => new();
-    public static NormalizedDouble One => new(1);
+    public static NormalizedDouble One => new(1d);
     public static int Radix => 2;
-    public static NormalizedDouble Zero => new(0);
+    public static NormalizedDouble Zero => new(0d);
 }
