@@ -25,9 +25,14 @@ namespace VNet.System.Events
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            if (_handlers.TryGetValue(typeof(TEvent), out var handlers) && handlers is ConcurrentBag<object> bag)
+            if (!_handlers.TryGetValue(typeof(TEvent), out var handlers) || handlers is not ConcurrentBag<Action<TEvent>> bag) return;
+            Action<TEvent> temp;
+            while (bag.TryTake(out temp))
             {
-                bag.TryTake(out var removedHandler);
+                if (temp != handler)
+                {
+                    bag.Add(temp);
+                }
             }
         }
 
