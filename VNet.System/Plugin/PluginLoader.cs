@@ -10,14 +10,15 @@ namespace VNet.System.Plugin
         private readonly string _luaPluginsFolder;
         private readonly string _apiVersion;
         private readonly string[] _compatibleApiVersions;
+        private readonly IPluginApi _api;
 
-
-        public PluginLoader(string cSharpPluginsFolder, string luaPluginsFolder, string apiVersion, string[] compatibleApiVersions)
+        public PluginLoader(string cSharpPluginsFolder, string luaPluginsFolder, IPluginApi api)
         {
             _cSharpPluginsFolder = cSharpPluginsFolder;
             _luaPluginsFolder = luaPluginsFolder;
-            _apiVersion = apiVersion;
-            _compatibleApiVersions = compatibleApiVersions;
+            _api = api;
+            _apiVersion = api.ApiVersion;
+            _compatibleApiVersions = api.CompatibleApiVersions;
         }
 
         public void RegisterPlugins(IEventAggregator eventAggregator)
@@ -28,6 +29,8 @@ namespace VNet.System.Plugin
                 {
                     continue;
                 }
+
+                plugin.Initialize(_api);
 
                 foreach (var eventName in plugin.InterestedEvents)
                 {

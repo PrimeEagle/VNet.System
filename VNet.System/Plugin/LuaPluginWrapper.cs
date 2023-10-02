@@ -1,4 +1,5 @@
 ﻿using NLua;
+using VNet.System.Events;
 
 namespace VNet.System.Plugin
 {
@@ -36,6 +37,14 @@ namespace VNet.System.Plugin
             if (_luaEnvironment.GetFunction("HandleEvent") is LuaFunction function)
             {
                 function.Call(eventName, args);
+            }
+        }
+
+        public void Initialize(IPluginApi api)
+        {
+            if (_luaEnvironment.GetFunction("Initialize") is LuaFunction function)
+            {
+                function.Call(api);
             }
         }
 

@@ -9,5 +9,6 @@
         DateTime ReleaseDate { get; }
         List<string> InterestedEvents { get; }
         void HandleEvent(string eventName, global::System.EventArgs args);
+        void Initialize(IPluginApi api);
     }
 }
