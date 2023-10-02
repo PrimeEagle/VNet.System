@@ -24,6 +24,7 @@ namespace VNet.System.Plugin
             InterestedEvents = ConvertLuaTableToList(luaInterestedEvents);
         }
 
+        public string ApiVersion { get; }
         public string Name { get; }
         public string Author { get; }
         public string Version { get; }

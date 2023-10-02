@@ -2,6 +2,7 @@
 {
     public interface IPlugin
     {
+        string ApiVersion { get; }
         string Name { get; }
         string Author { get; }
         string Version { get; }
