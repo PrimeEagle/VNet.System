@@ -1,10 +1,13 @@
 ﻿using System.Collections.Concurrent;
 
+// ReSharper disable ClassNeverInstantiated.Global
+
+
 namespace VNet.System.Events
 {
-    public class EventAggregator
+    public class EventAggregator : IEventAggregator
     {
-        private readonly ConcurrentDictionary<Type, object> _handlers = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentDictionary<Type, object> _handlers = new();
 
         public void Subscribe<TEvent>(Action<TEvent> handler)
         {
@@ -26,8 +29,7 @@ namespace VNet.System.Events
             }
 
             if (!_handlers.TryGetValue(typeof(TEvent), out var handlers) || handlers is not ConcurrentBag<Action<TEvent>> bag) return;
-            Action<TEvent> temp;
-            while (bag.TryTake(out temp))
+            while (bag.TryTake(out var temp))
             {
                 if (temp != handler)
                 {
@@ -36,7 +38,39 @@ namespace VNet.System.Events
             }
         }
 
+        public void Publish<TEvent>(TEvent eventToPublish)
+        {
+            if (eventToPublish == null)
+            {
+                throw new ArgumentNullException(nameof(eventToPublish));
+            }
+
+            DispatchEvent(eventToPublish);
+        }
+
         public async Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
+        {
+            if (@event == null)
+            {
+                throw new ArgumentNullException(nameof(@event));
+            }
+
+            await DispatchEventAsync(@event, cancellationToken);
+        }
+
+        private void DispatchEvent<TEvent>(TEvent eventToPublish)
+        {
+            if (!_handlers.TryGetValue(typeof(TEvent), out var handlers) || handlers is not ConcurrentBag<object> bag) return;
+            foreach (var handler in bag)
+            {
+                if (handler is Action<TEvent> action)
+                {
+                    action(eventToPublish);
+                }
+            }
+        }
+
+        private async Task DispatchEventAsync<TEvent>(TEvent eventToPublish, CancellationToken cancellationToken)
         {
             if (_handlers.TryGetValue(typeof(TEvent), out var handlers) && handlers is ConcurrentBag<object> bag)
             {
@@ -44,11 +78,11 @@ namespace VNet.System.Events
                 {
                     switch (handler)
                     {
-                        case Action<TEvent> syncHandler:
-                            syncHandler(@event);
+                        case Action<TEvent> action:
+                            action(eventToPublish);
                             break;
                         case Func<TEvent, CancellationToken, Task> asyncHandler:
-                            await asyncHandler(@event, cancellationToken);
+                            await asyncHandler(eventToPublish, cancellationToken).ConfigureAwait(false);
                             break;
                     }
                 }
