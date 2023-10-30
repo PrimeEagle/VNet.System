@@ -2,9 +2,13 @@
 
 public interface ITempFileService
 {
-    public TempFile RegisterFile(string filename);
-    public TempFile RegisterFile(int setId, string filename);
-    public void CleanSetId(int setId);
-    public void RemoveTempDirectory();
-    public string TempDirectory { get; init; }
+    TempFile RegisterFile(string filename);
+    TempFile RegisterFile(int setId, string filename);
+    void CleanSetId(int setId);
+    Task CleanSetIdAsync(int setId);
+    void CleanAll();
+    Task CleanAllAsync();
+    void RemoveTempDirectory();
+    Task RemoveTempDirectoryAsync();
+    string TempDirectory { get; init; }
 }

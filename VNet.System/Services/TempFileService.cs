@@ -20,7 +20,7 @@ namespace VNet.System.Services
             _catalog = new Dictionary<int, List<string>>();
             _loggerService = loggerService;
             TempDirectory = options.Value.TempDirectory;
-            
+
             if (!Directory.Exists(TempDirectory))
             {
                 Directory.CreateDirectory(TempDirectory);
@@ -73,38 +73,57 @@ namespace VNet.System.Services
         private string GetTempFilename(int setId, string filename)
         {
             var tempDir = Path.Combine(TempDirectory, setId.ToString());
-            if(!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
+            if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
 
             return Path.Combine(tempDir, filename);
         }
 
         public void CleanSetId(int setId)
         {
-            if (_catalog.TryGetValue(setId, out _))
+            CleanSetIdAsync(setId).GetAwaiter().GetResult();
+        }
+
+        public Task CleanSetIdAsync(int setId)
+        {
+            return Task.Run(() =>
             {
-                Directory.Delete(Path.Combine(TempDirectory, setId.ToString()), true);
-                _catalog.Remove(setId);
-            }
-            else
-            {
-                var ex = new ArgumentException("The specified ID does not exist in the catalog.", nameof(setId));
-                _loggerService.LogError(ex, "The specified ID does not exist in the catalog.");
-                throw ex;
-            }
+                if (_catalog.TryGetValue(setId, out _))
+                {
+                    Directory.Delete(Path.Combine(TempDirectory, setId.ToString()), true);
+                    _catalog.Remove(setId);
+                }
+                else
+                {
+                    var ex = new ArgumentException("The specified ID does not exist in the catalog.", nameof(setId));
+                    _loggerService.LogError(ex, "The specified ID does not exist in the catalog.");
+                    throw ex;
+                }
+            });
         }
 
         public void CleanAll()
         {
-            foreach (var key in _catalog.Keys)
-            {
-                CleanSetId(key);
-            }
+            CleanAllAsync().GetAwaiter().GetResult();
         }
 
+        public async Task CleanAllAsync()
+        {
+            var tasks = _catalog.Keys.Select(CleanSetIdAsync).ToList();
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+        }
+        
         public void RemoveTempDirectory()
         {
-            if (Directory.Exists(TempDirectory))
-                Directory.Delete(TempDirectory, true);
+            RemoveTempDirectoryAsync().GetAwaiter().GetResult();
+        }
+
+        public Task RemoveTempDirectoryAsync()
+        {
+            return Task.Run(() =>
+            {
+                if (Directory.Exists(TempDirectory))
+                    Directory.Delete(TempDirectory, true);
+            });
         }
     }
 }
