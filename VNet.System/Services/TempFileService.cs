@@ -38,7 +38,7 @@ namespace VNet.System.Services
             return id;
         }
 
-        public TempFile RegisterFile(string filename)
+        public TempFile RegisterFile(string fileName)
         {
             var setId = GetNextSetId();
 
@@ -47,17 +47,17 @@ namespace VNet.System.Services
                 _catalog.Add(setId, new List<string>());
             }
 
-            var tempFilename = GetTempFilename(setId, filename);
+            var tempFilename = GetTempFilename(setId, fileName);
             _catalog[setId].Add(tempFilename);
 
             return new TempFile(TempDirectory, setId, tempFilename);
         }
 
-        public TempFile RegisterFile(int setId, string filename)
+        public TempFile RegisterFile(int setId, string fileName)
         {
             if (_catalog.TryGetValue(setId, out var list))
             {
-                var tempFilename = GetTempFilename(setId, filename);
+                var tempFilename = GetTempFilename(setId, fileName);
                 list.Add(tempFilename);
 
                 return new TempFile(TempDirectory, setId, tempFilename);
@@ -70,12 +70,12 @@ namespace VNet.System.Services
             }
         }
 
-        private string GetTempFilename(int setId, string filename)
+        private string GetTempFilename(int setId, string fileName)
         {
             var tempDir = Path.Combine(TempDirectory, setId.ToString());
             if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
 
-            return Path.Combine(tempDir, filename);
+            return Path.Combine(tempDir, fileName);
         }
 
         public void CleanSetId(int setId)

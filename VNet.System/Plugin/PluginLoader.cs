@@ -71,9 +71,9 @@ namespace VNet.System.Plugin
 
             if (string.IsNullOrEmpty(_luaPluginsFolder)) return result;
 
-            foreach (var filename in Directory.GetFiles(_luaPluginsFolder, "*.lua"))
+            foreach (var fileName in Directory.GetFiles(_luaPluginsFolder, "*.lua"))
             {
-                var luaScript = File.ReadAllText(filename);
+                var luaScript = File.ReadAllText(fileName);
                 using Lua lua = new();
                 lua.DoString(luaScript);
                 result.Add(new LuaPluginWrapper(luaScript, lua));

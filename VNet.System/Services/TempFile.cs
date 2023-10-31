@@ -2,15 +2,15 @@
 {
     public class TempFile
     {
-        public string Filename { get; init; }
+        public string FileName { get; init; }
         public int SetId { get; init; }
         public string SetDirectory { get; init; }
 
 
 
-        public TempFile(string tempDirectory, int setId, string filename)
+        public TempFile(string tempDirectory, int setId, string fileName)
         {
-            Filename = filename;
+            FileName = fileName;
             SetId = setId;
             SetDirectory = Path.Combine(tempDirectory, setId.ToString());
         }
