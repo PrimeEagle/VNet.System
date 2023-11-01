@@ -3,9 +3,9 @@
 public interface ITempFileService
 {
     TempFile RegisterFile(string fileName);
-    TempFile RegisterFile(int setId, string fileName);
-    void CleanSetId(int setId);
-    Task CleanSetIdAsync(int setId);
+    TempFile RegisterFile(Guid setId, string fileName);
+    void CleanSetId(Guid setId);
+    Task CleanSetIdAsync(Guid setId);
     void CleanAll();
     Task CleanAllAsync();
     void RemoveTempDirectory();

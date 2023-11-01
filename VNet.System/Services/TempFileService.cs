@@ -8,7 +8,7 @@ namespace VNet.System.Services
 {
     public class TempFileService : ITempFileService
     {
-        private readonly Dictionary<int, List<string>> _catalog;
+        private readonly Dictionary<Guid, List<string>> _catalog;
         private readonly ILogger<TempFileService> _loggerService;
         public string TempDirectory { get; init; }
 
@@ -17,7 +17,7 @@ namespace VNet.System.Services
 
         public TempFileService(IOptions<TempFileServiceOptions> options, ILogger<TempFileService> loggerService)
         {
-            _catalog = new Dictionary<int, List<string>>();
+            _catalog = new Dictionary<Guid, List<string>>();
             _loggerService = loggerService;
             TempDirectory = options.Value.TempDirectory;
 
@@ -26,21 +26,9 @@ namespace VNet.System.Services
                 Directory.CreateDirectory(TempDirectory);
             }
         }
-
-        private int GetNextSetId()
-        {
-            var id = 1;
-            while (_catalog.ContainsKey(id))
-            {
-                id++;
-            }
-
-            return id;
-        }
-
         public TempFile RegisterFile(string fileName)
         {
-            var setId = GetNextSetId();
+            var setId = Guid.NewGuid();
 
             if (!_catalog.ContainsKey(setId))
             {
@@ -53,7 +41,7 @@ namespace VNet.System.Services
             return new TempFile(TempDirectory, setId, tempFilename);
         }
 
-        public TempFile RegisterFile(int setId, string fileName)
+        public TempFile RegisterFile(Guid setId, string fileName)
         {
             if (_catalog.TryGetValue(setId, out var list))
             {
@@ -64,13 +52,13 @@ namespace VNet.System.Services
             }
             else
             {
-                var ex = new ArgumentException("The specified ID does not exist in the catalog.", nameof(setId));
+                var ex = new ArgumentException("The specified ID does not exist in the catalog.", setId.ToString());
                 _loggerService.LogError(ex, "The specified ID does not exist in the catalog.");
                 throw ex;
             }
         }
 
-        private string GetTempFilename(int setId, string fileName)
+        private string GetTempFilename(Guid setId, string fileName)
         {
             var tempDir = Path.Combine(TempDirectory, setId.ToString());
             if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
@@ -78,12 +66,12 @@ namespace VNet.System.Services
             return Path.Combine(tempDir, fileName);
         }
 
-        public void CleanSetId(int setId)
+        public void CleanSetId(Guid setId)
         {
             CleanSetIdAsync(setId).GetAwaiter().GetResult();
         }
 
-        public Task CleanSetIdAsync(int setId)
+        public Task CleanSetIdAsync(Guid setId)
         {
             return Task.Run(() =>
             {

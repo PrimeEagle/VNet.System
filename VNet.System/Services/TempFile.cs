@@ -3,12 +3,12 @@
     public class TempFile
     {
         public string FileName { get; init; }
-        public int SetId { get; init; }
+        public Guid SetId { get; init; }
         public string SetDirectory { get; init; }
 
 
 
-        public TempFile(string tempDirectory, int setId, string fileName)
+        public TempFile(string tempDirectory, Guid setId, string fileName)
         {
             FileName = fileName;
             SetId = setId;
