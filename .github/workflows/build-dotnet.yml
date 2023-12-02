@@ -23,6 +23,9 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
+    - name: Restore NuGet packages
+      run: dotnet restore ${{ env.DOTNET_SOLUTION }}
+  
     - name: Build with version
       run: dotnet build ${{ env.DOTNET_SOLUTION }} /p:BuildNumber=${{ github.run_number }}
       
