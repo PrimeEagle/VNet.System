@@ -65,4 +65,4 @@ jobs:
           
       - name: Publish
         run: |
-          dotnet nuget push "${{ env.PACKAGE_FILE }}" --source "github" --api-key ${{ secrets.NUGET_TOKEN }}
+          dotnet nuget push "${{ env.PACKAGE_FILE }}" --source "github" --skip-duplicate --api-key ${{ secrets.NUGET_TOKEN }}
