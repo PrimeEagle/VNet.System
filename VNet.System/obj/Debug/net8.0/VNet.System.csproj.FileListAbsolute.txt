@@ -1,0 +1,13 @@
+D:\My Code\VNet.System.git\VNet.System\bin\Debug\net8.0\VNet.System.deps.json
+D:\My Code\VNet.System.git\VNet.System\bin\Debug\net8.0\VNet.System.dll
+D:\My Code\VNet.System.git\VNet.System\bin\Debug\net8.0\VNet.System.pdb
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.csproj.AssemblyReference.cache
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.GeneratedMSBuildEditorConfig.editorconfig
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.AssemblyInfoInputs.cache
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.AssemblyInfo.cs
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.csproj.CoreCompileInputs.cache
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.sourcelink.json
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.dll
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\refint\VNet.System.dll
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\VNet.System.pdb
+D:\My Code\VNet.System.git\VNet.System\obj\Debug\net8.0\ref\VNet.System.dll
