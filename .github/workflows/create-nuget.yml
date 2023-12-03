@@ -34,11 +34,11 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: ${{ secrets.DOTNET_VERSION }}
   
       - name: Pack
         run: |
-          dotnet pack ${{ env.DOTNET_SOLUTION }} --configuration Release -o nupkgs
+          dotnet pack ${{ secrets.DOTNET_SOLUTION }} --configuration Release -o nupkgs
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -55,7 +55,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: ${{ secrets.DOTNET_VERSION }}
   
       - name: Determine Package File
         id: package_file
