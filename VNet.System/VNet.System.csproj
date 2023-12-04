@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Pipeline\" />
+    <Compile Remove="Pipeline\**" />
+    <EmbeddedResource Remove="Pipeline\**" />
+    <None Remove="Pipeline\**" />
   </ItemGroup>
 
   <ItemGroup>
