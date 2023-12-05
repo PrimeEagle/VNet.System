@@ -16,16 +16,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Check for version.json changes
         id: check
         run: |
           $versionChanged = git diff --name-only ${{ github.event.before }} ${{ github.sha }} | Select-String -Pattern 'version.json' -Quiet
-          echo "version_changed=$versionChanged" | Out-File -Append -FilePath $Env:GITHUB_ENV
-          echo "::set-output name=version_changed::$versionChanged"
+          if ($versionChanged) {
+            echo "VERSION_CHANGED=true" | Out-File -Append -FilePath $Env:GITHUB_ENV
+          } else {
+            echo "VERSION_CHANGED=false" | Out-File -Append -FilePath $Env:GITHUB_ENV
+          }
+          echo "version_changed=$versionChanged" >> $GITHUB_ENV
       - name: Add GitHub Packages source
         run: |
           nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/PrimeEagle/index.json" -Username PrimeEagle -Password ${{ secrets.NUGET_TOKEN }}
-  
+
   create-package:
     needs: check-version-change
     runs-on: windows-latest
