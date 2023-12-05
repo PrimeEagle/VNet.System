@@ -1,8 +1,6 @@
-D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\testhost.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\testhost.exe
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
-D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\Microsoft.TestPlatform.AdapterUtilities.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\VNet.System.Tests.deps.json
@@ -26,7 +24,6 @@ D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\Microsoft.Win32.Sy
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\NLua.dll
-D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\NuGet.Frameworks.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\System.Drawing.Common.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\System.Security.Permissions.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\System.Windows.Extensions.dll
@@ -130,3 +127,16 @@ D:\My Code\VNet.System.git\VNet.System.Tests\obj\Debug\net8.0\refint\VNet.System
 D:\My Code\VNet.System.git\VNet.System.Tests\obj\Debug\net8.0\VNet.System.Tests.pdb
 D:\My Code\VNet.System.git\VNet.System.Tests\obj\Debug\net8.0\VNet.System.Tests.genruntimeconfig.cache
 D:\My Code\VNet.System.git\VNet.System.Tests\obj\Debug\net8.0\ref\VNet.System.Tests.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\cs\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\de\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\es\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\fr\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\it\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\ja\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\ko\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\pl\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\pt-BR\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\ru\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\tr\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\zh-Hans\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
