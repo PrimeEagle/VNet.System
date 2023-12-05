@@ -50,8 +50,8 @@ jobs:
 
       - name: Read Version from version.json
         run: |
-          $versionJson = Get-Content version.json | ConvertFrom-Json
-          echo "VERSION_NUMBER=$versionJson.version" | Out-File -Append -FilePath $Env:GITHUB_ENV
+          $versionJson = Get-Content version.json -Raw | ConvertFrom-Json
+          echo "VERSION_NUMBER=$($versionJson.version)" | Out-File -Append -FilePath $Env:GITHUB_ENV
 
       - name: Print Version Number
         run: echo "Version number is $env:VERSION_NUMBER"
