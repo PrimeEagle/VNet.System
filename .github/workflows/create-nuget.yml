@@ -49,14 +49,12 @@ jobs:
           nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/PrimeEagle/index.json" -Username PrimeEagle -Password ${{ secrets.NUGET_TOKEN }}
 
       - name: Read Version from version.json
-        id: read_version
         run: |
           $versionJson = Get-Content version.json | ConvertFrom-Json
           echo "VERSION_NUMBER=$versionJson.version" | Out-File -Append -FilePath $Env:GITHUB_ENV
 
       - name: Pack
-        run: |
-          dotnet pack ${{ secrets.DOTNET_SOLUTION }} --configuration Release -o nupkgs /p:Version=${{ env.VERSION_NUMBER }}
+        run: dotnet pack ${{ secrets.DOTNET_SOLUTION }} --configuration Release -o nupkgs /p:Version=${{ env.VERSION_NUMBER }}
   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
