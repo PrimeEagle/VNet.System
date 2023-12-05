@@ -140,3 +140,4 @@ D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\ru\Microsoft.Visua
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\tr\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\zh-Hans\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
 D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+D:\My Code\VNet.System.git\VNet.System.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_VNet.System.Tests
