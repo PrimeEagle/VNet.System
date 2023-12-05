@@ -53,6 +53,9 @@ jobs:
           $versionJson = Get-Content version.json | ConvertFrom-Json
           echo "VERSION_NUMBER=$versionJson.version" | Out-File -Append -FilePath $Env:GITHUB_ENV
 
+      - name: Print Version Number
+        run: echo "Version number is $env:VERSION_NUMBER"
+
       - name: Pack
         run: dotnet pack ${{ secrets.DOTNET_SOLUTION }} --configuration Release -o nupkgs /p:Version=${{ env.VERSION_NUMBER }}
   
