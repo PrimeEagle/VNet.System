@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    outputs:
+          release_needed: ${{ steps.compare_versions.outputs.release_needed }}
+          version: ${{ steps.compare_versions.outputs.version }}
 
     steps:
     - uses: actions/checkout@v3
@@ -58,36 +61,22 @@ jobs:
       continue-on-error: true
 
     - name: Compare with version.json
+      id: compare_versions
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        echo "Version from version.json: $($versionJson.version)"
         $latestReleaseTag = $env:LATEST_RELEASE_TAG
-        echo "Latest release tag: $latestReleaseTag"
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
-          echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
-          echo "VERSION=$($versionJson.version)" >> $GITHUB_ENV
-          echo "Release needed set to true"
+          echo "::set-output name=release_needed::true"
+          echo "::set-output name=version::$($versionJson.version)"
         } else {
-          echo "No new release needed"
+          echo "::set-output name=release_needed::false"
         }
       shell: pwsh
-      env:
-        DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
 
-    - name: Set Release Needed
-      run: |
-        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        $latestReleaseTag = $env:LATEST_RELEASE_TAG
-        if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
-          echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
-          echo "VERSION=$($versionJson.version)" >> $GITHUB_ENV
-        }
-      shell: pwsh
-    
     - name: Debug Release Needed
       run: |
-        echo "Is release needed: $env:RELEASE_NEEDED"
-        echo "Version to release: $env:VERSION"
+        echo "Is release needed: ${{ needs.build.outputs.release_needed }}"
+        echo "Version to release: ${{ needs.build.outputs.version }}"
       shell: pwsh
       
     - name: Create Release
