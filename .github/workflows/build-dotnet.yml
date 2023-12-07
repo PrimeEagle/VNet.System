@@ -74,6 +74,11 @@ jobs:
       env:
         DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
 
+    - name: Debug Release Needed
+      run: |
+        echo "Is release needed: $env:RELEASE_NEEDED"
+      shell: pwsh
+      
     - name: Create Release
       if: env.RELEASE_NEEDED == 'true'
       run: |
