@@ -52,11 +52,12 @@ jobs:
       id: latest_release
       run: |
         try {
-            $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"}
-            Write-Host "Latest Release Tag: $($latest_release.tag_name)"
+            $latest_release_json = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"}
+            $latest_release = $latest_release_json | ConvertTo-Json -Depth 100
+            echo "Latest Release Tag: $($latest_release.tag_name)"
             $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-            Write-Host "Version from version.json: $($versionJson.version)"
-            if ($versionJson.version -ne $latest_release.tag_name) {
+            echo "Version from version.json: $($versionJson.version)"
+            if ($versionJson.version -ne ($latest_release | ConvertFrom-Json).tag_name) {
                 echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
             }
         } catch {
