@@ -53,7 +53,7 @@ jobs:
       id: latest_release
       uses: octokit/request-action@v2.x
       with:
-        route: GET /repos/PrimeEagle/{repo}/releases/latest
+        route: GET /repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
@@ -71,6 +71,8 @@ jobs:
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $latestReleaseTag = $env:LATEST_RELEASE_TAG
+        echo $latestReleaseTag
+        echo $versionJson.version
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
           echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
         }
