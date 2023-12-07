@@ -34,7 +34,7 @@ jobs:
 
     - name: Add GitHub Packages source
       run: |
-        nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/PrimeEagle/index.json" -Username PrimeEagle -Password ${{ secrets.BUILD_TOKEN }}
+        nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username ${{ github.repository_owner }} -Password ${{ secrets.BUILD_TOKEN }}
       
     - name: Restore NuGet packages
       run: dotnet restore ${{ secrets.DOTNET_SOLUTION }}
@@ -55,17 +55,18 @@ jobs:
       id: latest_release
       uses: octokit/request-action@v2.x
       with:
-        route: GET /repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest
+        route: GET /repos/${{ github.repository_owner }}/${{ secrets.DOTNET_SOLUTION }}/releases/latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
 
     - name: Compare with version.json and Write to Script
       run: |
-        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+        $versionFile = ".version/version.json"
+        $versionJson = Get-Content $versionFile | ConvertFrom-Json
         $latestReleaseTag = ""
         try {
-          $latestReleaseResponse = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"}
+          $latestReleaseResponse = Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/releases/latest" -Headers @{Authorization = "Bearer ${{ secrets.BUILD_TOKEN }}"}
           $latestReleaseTag = $latestReleaseResponse.tag_name
         } catch {
           echo "No latest release found"
@@ -86,7 +87,7 @@ jobs:
             $release_name = "Release $tag_name"
             $release_notes = "Release $tag_name"
             
-            $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases"
+            $uri = "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/releases"
             $headers = @{
               Authorization = "Bearer ${{ secrets.BUILD_TOKEN }}"
               Accept = "application/vnd.github.v3+json"
