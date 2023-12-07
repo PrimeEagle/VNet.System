@@ -74,9 +74,20 @@ jobs:
       env:
         DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
 
+    - name: Set Release Needed
+      run: |
+        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+        $latestReleaseTag = $env:LATEST_RELEASE_TAG
+        if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
+          echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
+          echo "VERSION=$($versionJson.version)" >> $GITHUB_ENV
+        }
+      shell: pwsh
+    
     - name: Debug Release Needed
       run: |
         echo "Is release needed: $env:RELEASE_NEEDED"
+        echo "Version to release: $env:VERSION"
       shell: pwsh
       
     - name: Create Release
