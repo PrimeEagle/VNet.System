@@ -1,4 +1,7 @@
-name: Update Readme
+name: Update Stats
+
+on:
+  workflow_dispatch:
 
 jobs:
   update-readme:
