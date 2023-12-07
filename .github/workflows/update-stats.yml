@@ -16,7 +16,7 @@ jobs:
       run: |
         # Define the new version numbers
         $NewReleaseVersion = "v2.0"  # Replace with your dynamic version variable for release
-        $NewDotNetVersion = "9.0"    # Replace with your dynamic version variable for .NET
+        $NewDotNetVersion = "${{ secrets.DOTNET_VERSION }}"    # Replace with your dynamic version variable for .NET
         $NewDotNetVersion = $NewDotNetVersion.Replace(".*", "")
         $NewNugetVersion = "v3.0"    # Replace with your dynamic version variable for NuGet
 
@@ -27,7 +27,7 @@ jobs:
 
         # New badge lines with updated versions
         $ReleaseReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Release-$NewReleaseVersion-blue)"
-        $DotNetReplacement = "![Static Badge](https://img.shields.io/badge/.NET-$NewDotNetVersion-blue)"
+        $DotNetReplacement = "![Static Badge](https://img.shields.io/badge/.NET-$NewDotNetVersion-darkblue)"
         $NugetReplacement = "![Static Badge](https://img.shields.io/badge/NuGet_Package-$NewNugetVersion-blue)"
 
         # Update the README.md
