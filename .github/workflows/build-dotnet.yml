@@ -47,3 +47,32 @@ jobs:
     - name: Print Run Number
       run: echo "Run number $env:GITHUB_RUN_NUMBER"
       shell: pwsh
+
+    - name: Check Latest Release
+      id: latest_release
+      uses: octokit/request-action@v2.x
+      with:
+        route: GET /repos/${{ github.repository }}/releases/latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Compare with version.json
+      id: compare_versions
+      run: |
+        $versionJson = Get-Content 'path/to/version.json' | ConvertFrom-Json
+        $latestRelease = ${{ steps.latest_release.outputs.data }}
+        if ($latestRelease.tag_name -ne $versionJson.version) {
+          echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
+        }
+      shell: pwsh
+
+    - name: Create Release
+      if: env.RELEASE_NEEDED == 'true'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.compare_versions.outputs.new_version }}
+        release_name: Release ${{ steps.compare_versions.outputs.new_version }}
+        draft: false
+        prerelease: false
