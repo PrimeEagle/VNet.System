@@ -48,24 +48,34 @@ jobs:
       run: echo "Run number $env:GITHUB_RUN_NUMBER"
       shell: pwsh
 
+    - name: Check Latest Release
+      id: latest_release
+      uses: octokit/request-action@v2.x
+      with:
+        route: GET /repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
+
     - name: Compare with version.json
+      id: compare_versions
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $latestReleaseTag = $env:LATEST_RELEASE_TAG
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
           echo "release_needed=true" >> $GITHUB_ENV
-          echo "version=$($versionJson.version)" >> $GITHUB_ENV
-          echo "Setting release needed to true and version to $($versionJson.version)"
+          echo "::set-output name=release_needed::true"
+          echo "::set-output name=version::$($versionJson.version)"
         } else {
           echo "release_needed=false" >> $GITHUB_ENV
-          echo "No release needed"
+          echo "::set-output name=release_needed::false"
         }
       shell: pwsh
 
     - name: Debug Release Needed
       run: |
-        echo "Is release needed: $env:release_needed"
-        echo "Version to release: $env:version"
+        echo "Is release needed: ${{ steps.compare_versions.outputs.release_needed }}"
+        echo "Version to release: ${{ steps.compare_versions.outputs.version }}"
       shell: pwsh
       
     - name: Create Release
