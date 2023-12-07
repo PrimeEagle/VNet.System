@@ -22,7 +22,7 @@ jobs:
 
         # Patterns to identify the badge lines
         $ReleasePattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/Latest_Release-v[0-9]+(\.[0-9]+){0,2}-blue\)'
-        $DotNetPattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/\.NET-[0-9]+(\.[0-9]+){0,2}-blue\)'
+        $DotNetPattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/\.NET-[0-9]+(\.[0-9]+){0,2}-darkblue\)'
         $NugetPattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/NuGet_Package-v[0-9]+(\.[0-9]+){0,2}-blue\)'
 
         # New badge lines with updated versions
