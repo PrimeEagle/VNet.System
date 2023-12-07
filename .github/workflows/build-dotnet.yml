@@ -57,6 +57,7 @@ jobs:
             echo "Latest Release Tag: $($latest_release.tag_name)"
             $versionJson = Get-Content 'version.json' | ConvertFrom-Json
             echo "Version from version.json: $($versionJson.version)"
+            echo "::set-env name=VERSION::$($versionJson.version)"
             if ($versionJson.version -ne ($latest_release | ConvertFrom-Json).tag_name) {
                 echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
             }
