@@ -91,3 +91,16 @@ jobs:
       - name: Publish
         run: |
           dotnet nuget push "${{ env.PACKAGE_FILE }}" --source "github" --skip-duplicate --api-key ${{ secrets.BUILD_TOKEN }}
+
+      - name: Update version-nuget.json
+        run: |
+          $NugetVersion = ${{ env.VERSION_NUMBER }}
+          $VersionData = @{
+            version = $NugetVersion
+          }
+          $VersionData | ConvertTo-Json | Set-Content -Path 'version-nuget.json'
+          git config --global user.email "$Email"
+          git config --global user.name "$Owner"
+          git add version-nuget.json
+          git commit -m "Update NuGet package version to $NugetVersion"
+          git push
