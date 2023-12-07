@@ -55,7 +55,6 @@ jobs:
         # Check if there are changes and commit them
         if (git status --porcelain) {
           git config --global user.name '$Owner'
-          #git config --global user.email '$Email'
           git add README.md
           git commit -m "Update version badges in README"
           git push
