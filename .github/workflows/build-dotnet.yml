@@ -51,22 +51,30 @@ jobs:
     - name: Check Latest Release
       id: latest_release
       run: |
-        latest_release=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest)
-        if [[ "$latest_release" == *"Not Found"* ]]; then
-          echo "::set-env name=RELEASE_NEEDED::true"
-        else
-          versionJson=$(cat version.json | jq -r .version)
-          release_version=$(echo "$latest_release" | jq -r .tag_name)
-          if [ "$versionJson" != "$release_version" ]; then
-            echo "::set-env name=RELEASE_NEEDED::true"
-          fi
-        fi
+        $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"}
+        if ($latest_release.message -eq "Not Found") {
+          Write-Host "::set-env name=RELEASE_NEEDED::true"
+        } else {
+          $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+          $release_version = $latest_release.tag_name
+          if ($versionJson.version -ne $release_version) {
+            Write-Host "::set-env name=RELEASE_NEEDED::true"
+          }
+        }
       continue-on-error: true
 
     - name: Create Release
       if: env.RELEASE_NEEDED == 'true'
       run: |
-        echo "Creating a new release..."
-        release_title="Release ${{ github.run_number }}"
-        release_body="Automated release created by GitHub Actions"
-        curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" -X POST https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases -d "{\"tag_name\":\"${{ github.run_number }}\",\"name\":\"${release_title}\",\"body\":\"${release_body}\",\"draft\":false,\"prerelease\":false}"
+        Write-Host "Creating a new release..."
+        $release_title = "Release ${{ github.run_number }}"
+        $release_body = "Automated release created by GitHub Actions"
+        Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases" -Method Post -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"} -ContentType "application/json" -Body @"
+        {
+          "tag_name": "${{ github.run_number }}",
+          "name": "${release_title}",
+          "body": "${release_body}",
+          "draft": false,
+          "prerelease": false
+        }
+        "@
