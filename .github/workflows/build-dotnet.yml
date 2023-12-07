@@ -52,7 +52,7 @@ jobs:
       id: latest_release
       uses: octokit/request-action@v2.x
       with:
-        route: GET /repos/PrimeEagle/{repo}/releases/latest
+        route: GET /repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
