@@ -46,11 +46,8 @@ jobs:
         $NewDotNetVersion = $NewDotNetVersion.Replace(".*", "")
         echo ".NET version = $NewDotNetVersion"
 
-        # Create a temporary NuGet.Config file with GitHub Packages source and credentials
-        $NugetConfigPath = "$Env:RUNNER_TEMP\NuGet.Config"
-        $NugetConfigContent = "<?xml version='1.0' encoding='utf-8'?><configuration><packageSources><add key='github' value='https://nuget.pkg.github.com/$Owner/index.json' /></packageSources><packageSourceCredentials><github><add key='Username' value='$Owner' /><add key='ClearTextPassword' value='${{ secrets.BUILD_TOKEN }}' /></github></packageSourceCredentials></configuration>"
-        
-        $NugetConfigContent | Set-Content -Path $NugetConfigPath -NoNewline
+        $versionJson = Get-Content 'version-nuget.json' | ConvertFrom-Json
+        $NewNugetVersion ="$($versionJson.version)"   
 
         # Set the NuGet.Config to use
         $Env:NUGET_CONFIG = $NugetConfigPath
