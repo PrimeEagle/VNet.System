@@ -51,9 +51,13 @@ jobs:
     - name: Get Latest Release
       id: latest_release
       run: |
-        $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"}
-        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        if ($latest_release.message -eq "Not Found" -or $versionJson.version -ne $latest_release.tag_name) {
+        try {
+          $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"}
+          $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+          if ($latest_release.message -eq "Not Found" -or $versionJson.version -ne $latest_release.tag_name) {
+            Write-Host "::set-env name=RELEASE_NEEDED::true"
+          }
+        } catch {
           Write-Host "::set-env name=RELEASE_NEEDED::true"
         }
       continue-on-error: true
