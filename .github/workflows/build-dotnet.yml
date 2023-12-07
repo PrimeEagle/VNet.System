@@ -52,9 +52,14 @@ jobs:
       id: latest_release
       uses: octokit/request-action@v2.x
       with:
-        route: GET /repos/${{ github.repository }}/releases/latest
+        route: GET /repos/PrimeEagle/{repo}/releases/latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
+    
+    - name: Set Output if No Release Found
+      if: steps.latest_release.outcome == 'failure'
+      run: echo "NO_RELEASE_FOUND=true" >> $GITHUB_ENV
 
     - name: Compare with version.json
       id: compare_versions
