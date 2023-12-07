@@ -10,7 +10,43 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    # [Previous steps...]
+    - uses: actions/checkout@v3
+      with:
+          submodules: 'recursive'
+          token: ${{ secrets.BUILD_TOKEN }}
+
+    - name: Install .NET 8.0 SDK
+      run: |
+        $url = "https://download.visualstudio.microsoft.com/download/pr/2b2d6133-c4f9-46dd-9ab6-86443a7f5783/340054e2ac7de2bff9eea73ec9d4995a/dotnet-sdk-8.0.100-win-x64.zip"
+        $output = "dotnet-sdk-8.0.100-win-x64.zip"
+        Invoke-WebRequest -Uri $url -OutFile $output
+        Expand-Archive $output -DestinationPath $Env:ProgramFiles\dotnet -Force
+        $env:PATH = "$Env:ProgramFiles\dotnet;" + $env:PATH
+        [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [EnvironmentVariableTarget]::Machine)
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: ${{ secrets.DOTNET_VERSION }}
+
+    - name: Add GitHub Packages source
+      run: |
+        nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/PrimeEagle/index.json" -Username PrimeEagle -Password ${{ secrets.BUILD_TOKEN }}
+      
+    - name: Restore NuGet packages
+      run: dotnet restore ${{ secrets.DOTNET_SOLUTION }}
+      env:
+            NUGET_AUTH_TOKEN: ${{ secrets.BUILD_TOKEN }}
+            UsePackageReferences: true
+              
+    - name: Build with version
+      run: dotnet build ${{ secrets.DOTNET_SOLUTION }} /p:BuildNumber=${{ github.run_number }}
+      env:
+            UsePackageReferences: true
+      
+    - name: Print Run Number
+      run: echo "Run number $env:GITHUB_RUN_NUMBER"
+      shell: pwsh
 
     - name: Check Latest Release
       id: latest_release
