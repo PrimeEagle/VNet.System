@@ -57,7 +57,7 @@ jobs:
             </packageSources>
             <packageSourceCredentials>
               <github>
-                <add key="Username" value="username" />
+                <add key="Username" value="$Owner" />
                 <add key="ClearTextPassword" value="${{ secrets.BUILD_TOKEN }}" />
               </github>
             </packageSourceCredentials>
