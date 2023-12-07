@@ -1,11 +1,6 @@
 name: Update Stats
 
 on:
-  push:
-      paths-ignore:
-        - 'README.md'
-        - '.github/workflows/*.yml'
-  pull_request:
   workflow_run:
     workflows: ["Build .NET", "Build NuGet"]
     branches: [main]
@@ -95,12 +90,7 @@ jobs:
         
         # Update the README.md
         $readmeContent = Get-Content README.md
-        $readmeContent -replace $ReleasePattern, $ReleaseReplacement 
-                       -replace $DotNetPattern, $DotNetReplacement 
-                       -replace $NugetPattern, $NugetReplacement 
-                       -replace $NugetErrorPattern, $NugetReplacement 
-                       -replace $BuildPattern, $BuildReplacement
-                       -replace $BuildErrorPattern, $BuildReplacement | Set-Content README.md
+        $readmeContent -replace $ReleasePattern, $ReleaseReplacement -replace $DotNetPattern, $DotNetReplacement -replace $NugetPattern, $NugetReplacement -replace $NugetErrorPattern, $NugetReplacement -replace $BuildPattern, $BuildReplacement -replace $BuildErrorPattern, $BuildReplacement | Set-Content README.md
 
         # Check if there are changes and commit them
         if (git status --porcelain) {
