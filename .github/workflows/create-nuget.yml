@@ -1,4 +1,4 @@
-name: Biuld NuGet
+name: Build NuGet
 
 on:
   workflow_dispatch:
