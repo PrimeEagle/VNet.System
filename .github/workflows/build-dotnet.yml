@@ -1,4 +1,4 @@
-name: .NET Build and Version
+name: Build .NET
 
 on:
   push:
@@ -12,8 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        submodules: 'recursive'
-        token: ${{ secrets.BUILD_TOKEN }}
+          submodules: 'recursive'
+          token: ${{ secrets.BUILD_TOKEN }}
 
     - name: Install .NET 8.0 SDK
       run: |
@@ -36,43 +36,57 @@ jobs:
     - name: Restore NuGet packages
       run: dotnet restore ${{ secrets.DOTNET_SOLUTION }}
       env:
-        NUGET_AUTH_TOKEN: ${{ secrets.BUILD_TOKEN }}
-        UsePackageReferences: true
+            NUGET_AUTH_TOKEN: ${{ secrets.BUILD_TOKEN }}
+            UsePackageReferences: true
               
     - name: Build with version
       run: dotnet build ${{ secrets.DOTNET_SOLUTION }} /p:BuildNumber=${{ github.run_number }}
       env:
-        UsePackageReferences: true
+            UsePackageReferences: true
       
     - name: Print Run Number
       run: echo "Run number $env:GITHUB_RUN_NUMBER"
       shell: pwsh
 
-    - name: Get Version from version.json
-      id: get_version
+    - name: Check Latest Release
+      id: latest_release
       run: |
-        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        Write-Output "::set-output name=version::${versionJson.version}"
-
-    - name: Create GitHub Release
-      run: |
-        $tag_name=""
-        $release_name="Release $tag_name"
-        $release_notes="Release $tag_name"
-        
-        $uri = "https://api.github.com/repos/PrimeEagle/***/releases"
-        $headers = @{
-            Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("PrimeEagle:***"))
-            Accept = "application/vnd.github.v3+json"
+        try {
+            $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"}
+            $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+            if ($versionJson.version -ne $latest_release.tag_name) {
+                echo "::set-env name=RELEASE_NEEDED::true"
+            }
+        } catch {
+            echo "::set-env name=RELEASE_NEEDED::true"
         }
-        $body = @{
-            tag_name = $tag_name
-            name     = $release_name
-            body     = $release_notes
-        }
-    
-        Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body ($body | ConvertTo-Json)
       shell: pwsh
       env:
         DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      if: env.RELEASE_NEEDED == 'true'
+      run: |
+        try {
+            $tag_name = $env:VERSION
+            $release_name = "Release $tag_name"
+            $release_notes = "Release $tag_name"
+            
+            $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases"
+            $headers = @{
+                Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"
+                Accept = "application/vnd.github.v3+json"
+            }
+            $body = @{
+                tag_name = $tag_name
+                name = $release_name
+                body = $release_notes
+            }
+            
+            Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body ($body | ConvertTo-Json)
+        } catch {
+            echo "Error creating release: $_"
+        }
+      shell: pwsh
+      env:
+        DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
