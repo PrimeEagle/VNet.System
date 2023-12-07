@@ -58,7 +58,9 @@ jobs:
         
         # Update the README.md
         $readmeContent = Get-Content README.md
+        echo "before: $readmeContent"
         $readmeContent -replace $ReleasePattern, $ReleaseReplacement -replace $DotNetPattern, $DotNetReplacement -replace $NugetPattern, $NugetReplacement -replace $BuildPattern, $BuildReplacement | Set-Content README.md
+        echo "after: $readmeContent"
 
         # Check if there are changes and commit them
         if (git status --porcelain) {
