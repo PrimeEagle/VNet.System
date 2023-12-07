@@ -41,6 +41,5 @@ jobs:
           git add README.md
           git commit -m "Update version badges in README"
           git push
-        } else {
-          Write-Output "No changes in README"
+        }
       shell: pwsh
