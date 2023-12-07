@@ -1,7 +1,10 @@
 name: Update Stats
 
 on:
-  #push:
+  push:
+      paths-ignore:
+        - 'README.md'
+        - '.github/workflows/*.yml'
   pull_request:
   workflow_run:
     workflows: ["Build .NET", "Build NuGet"]
