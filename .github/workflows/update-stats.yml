@@ -19,7 +19,10 @@ jobs:
         $headers = @{ Authorization = "token ${{ secrets.BUILD_TOKEN }}" }
         $response = Invoke-RestMethod -Uri $uri -Headers $headers
         $buildNumber = $response.workflow_runs[0].run_number
-
+        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+        $version='$($versionJson.version)
+        $NewBuildVersion = "$version.$buildNumber"
+        
          # API request to get the latest release version number
         $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.BUILD_TOKEN }}/releases/latest"
         $response = Invoke-RestMethod -Uri $uri -Headers $headers
@@ -31,18 +34,20 @@ jobs:
         $NewNugetVersion = "v3.0"    # Replace with your dynamic version variable for NuGet
 
         # Patterns to identify the badge lines
+        $BuildPattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/Latest_Build-v[0-9]+(\.[0-9]+){0,3}-lightblue\)'
         $ReleasePattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/Latest_Release-v[0-9]+(\.[0-9]+){0,2}-blue\)'
         $DotNetPattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/\.NET-[0-9]+(\.[0-9]+){0,2}-darkblue\)'
         $NugetPattern = '\!\[Static Badge\]\(https:\/\/img\.shields\.io\/badge\/NuGet_Package-v[0-9]+(\.[0-9]+){0,2}-blue\)'
 
         # New badge lines with updated versions
+        $BuildReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Build-$NewBuildVersion-lightblue)"
         $ReleaseReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Release-$NewReleaseVersion-blue)"
         $DotNetReplacement = "![Static Badge](https://img.shields.io/badge/.NET-$NewDotNetVersion-darkblue)"
         $NugetReplacement = "![Static Badge](https://img.shields.io/badge/NuGet_Package-$NewNugetVersion-blue)"
 
         # Update the README.md
         $readmeContent = Get-Content README.md
-        $readmeContent -replace $ReleasePattern, $ReleaseReplacement -replace $DotNetPattern, $DotNetReplacement -replace $NugetPattern, $NugetReplacement | Set-Content README.md
+        $readmeContent -replace $ReleasePattern, $ReleaseReplacement -replace $DotNetPattern, $DotNetReplacement -replace $NugetPattern, $NugetReplacement -replace $BuildPattern, $BuildReplacement | Set-Content README.md
 
         # Check if there are changes and commit them
         if (git status --porcelain) {
