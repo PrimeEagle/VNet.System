@@ -57,19 +57,24 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
     
-    - name: Set Output if No Release Found
-      if: steps.latest_release.outcome == 'failure'
+    - name: Set Latest Release Tag
+      if: success()
+      run: echo "LATEST_RELEASE_TAG=${{ steps.latest_release.outputs.data.tag_name }}" >> $GITHUB_ENV
+    
+    - name: Set No Release Flag
+      if: failure()
       run: echo "NO_RELEASE_FOUND=true" >> $GITHUB_ENV
-
+    
     - name: Compare with version.json
-      id: compare_versions
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        $latestRelease = ${{ steps.latest_release.outputs.data }}
-        if ($latestRelease.tag_name -ne $versionJson.version) {
+        $latestReleaseTag = $env:LATEST_RELEASE_TAG
+        if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
           echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
         }
       shell: pwsh
+      env:
+        DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
 
     - name: Create Release
       if: env.RELEASE_NEEDED == 'true'
