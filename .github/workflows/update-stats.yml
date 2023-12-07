@@ -16,6 +16,7 @@ jobs:
       run: |
         $Owner = "${{ github.repository_owner }}"
         $Repo = "${{ github.repository }}"
+        $Email = "${{ secrets.USER_EMAIL }}"
         
         # Get latest build number
         $uri = "https://api.github.com/repos/$Repo/actions/runs?status=completed&conclusion=success&per_page=1"
@@ -51,21 +52,15 @@ jobs:
         $ReleaseReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Release-v$NewReleaseVersion-blue)"
         $DotNetReplacement = "![Static Badge](https://img.shields.io/badge/.NET-$NewDotNetVersion-darkblue)"
         $NugetReplacement = "![Static Badge](https://img.shields.io/badge/NuGet_Package-v$NewNugetVersion-blue)"
-        echo $BuildReplacement
-        echo $ReleaseReplacement
-        echo $DotNetReplacement
-        echo $NugetReplacement
         
         # Update the README.md
         $readmeContent = Get-Content README.md
-        echo "before: $readmeContent"
         $readmeContent -replace $ReleasePattern, $ReleaseReplacement -replace $DotNetPattern, $DotNetReplacement -replace $NugetPattern, $NugetReplacement -replace $BuildPattern, $BuildReplacement | Set-Content README.md
-        echo "after: $readmeContent"
 
         # Check if there are changes and commit them
         if (git status --porcelain) {
           git config --global user.name "$Owner"
-          git config --global user.email "misc@hiddendragon.com"
+          git config --global user.email "$Email"
           git add README.md
           git commit -m "Update version badges in README"
           git push
