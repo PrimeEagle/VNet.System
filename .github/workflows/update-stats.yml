@@ -40,9 +40,13 @@ jobs:
         echo ".NET version = $NewDotNetVersion"
 
         $uri = "https://nuget.pkg.github.com/$Owner/index.json"
+        echo "uri = $uri"
         $version = nuget list ${{ secrets.DOTNET_SOLUTION }} -Source $uri -AllVersions | Select-String "${{ secrets.DOTNET_SOLUTION }}" | Select-Object -Last 1
+        echo "version = $version"
         $latestVersion = $version -replace "${{ secrets.DOTNET_SOLUTION }} ", ""
+        echo "latestVersion = $latestVersion"
         $NewNugetVersion = "v$latestVersion"
+        echo "nuget = $NewNugetVersion"
 
         # Patterns to identify the badge lines
         $BuildPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/Latest_Build-v[0-9]+(\.[0-9]+){0,3}-lightblue\)"
