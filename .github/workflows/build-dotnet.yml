@@ -73,22 +73,23 @@ jobs:
       run: |
           . .\release-info.ps1
           if ($release_needed -eq 'true') {
-          $tag_name = $version
-          $release_name = "Release $tag_name"
-           $release_notes = "Release $tag_name"
+            $tag_name = $version
+            $release_name = "Release $tag_name"
+             $release_notes = "Release $tag_name"
             
-           $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases"
-           $headers = @{
+             $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases"
+             $headers = @{
                Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"
                Accept = "application/vnd.github.v3+json"
-           }
-           $body = @{
+             }
+             $body = @{
                tag_name = $tag_name
                name = $release_name
                body = $release_notes
-           }
+             }
             
-           Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body ($body | ConvertTo-Json)
+             Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body ($body | ConvertTo-Json)
+           }
       shell: pwsh
       env:
         DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
