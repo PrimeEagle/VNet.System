@@ -64,7 +64,7 @@ jobs:
     - name: Compare with version.json
       id: compare_versions
       run: |
-        $versionJson = Get-Content 'path/to/version.json' | ConvertFrom-Json
+        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $latestRelease = ${{ steps.latest_release.outputs.data }}
         if ($latestRelease.tag_name -ne $versionJson.version) {
           echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
