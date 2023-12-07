@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - 'README.md'
+      - '.github/workflows/*.yml'
   pull_request:
   workflow_dispatch:
 
