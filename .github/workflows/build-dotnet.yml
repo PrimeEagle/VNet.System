@@ -48,36 +48,16 @@ jobs:
       run: echo "Run number $env:GITHUB_RUN_NUMBER"
       shell: pwsh
 
-    - name: Get Latest Release
-      id: latest_release
+    - name: Get Version from version.json
+      id: get_version
       run: |
-        try {
-          $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"}
-          $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-          if ($latest_release.message -eq "Not Found" -or $versionJson.version -ne $latest_release.tag_name) {
-            Write-Output "RELEASE_NEEDED=true" >> $GITHUB_ENV
-          }
-        } catch {
-          Write-Output "RELEASE_NEEDED=true" >> $GITHUB_ENV
-        }
-      continue-on-error: true
+        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+        Write-Output "::set-output name=version::${versionJson.version}"
 
     - name: Create Release
-      if: env.RELEASE_NEEDED == 'true'
-      run: |
-        Write-Host "Creating a new release..."
-        $release_title = "Release ${{ github.run_number }}"
-        $release_body = "Automated release created by GitHub Actions"
-        Write-Host "Tag name: ${{ github.run_number }}"
-        Write-Host "Release title: $release_title"
-        Write-Host "Release body: $release_body"
-        Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases" -Method Post -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"} -ContentType "application/json" -Body @"
-        {
-          "tag_name": "${{ github.run_number }}",
-          "name": "${release_title}",
-          "body": "${release_body}",
-          "draft": false,
-          "prerelease": false
-        }
-        "@
-    
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          ./*
+        tag_name: ${{ steps.get_version.outputs.version }}
+        token: ${{ secrets.GITHUB_TOKEN }}
