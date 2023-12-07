@@ -17,7 +17,7 @@ jobs:
         # Define the new version numbers
         $NewReleaseVersion = "v2.0"  # Replace with your dynamic version variable for release
         $NewDotNetVersion = "${{ secrets.DOTNET_VERSION }}"    # Replace with your dynamic version variable for .NET
-        $NewDotNetVersion = " " + $NewDotNetVersion.Replace(".*", "")
+        $NewDotNetVersion = $NewDotNetVersion.Replace(".*", "")
         echo ".net ver = " + $NewDotNetVersion
         $NewNugetVersion = "v3.0"    # Replace with your dynamic version variable for NuGet
 
