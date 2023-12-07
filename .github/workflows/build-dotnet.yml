@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    outputs:
-          release_needed: ${{ steps.compare_versions.outputs.release_needed }}
-          version: ${{ steps.compare_versions.outputs.version }}
 
     steps:
     - uses: actions/checkout@v3
@@ -66,17 +63,17 @@ jobs:
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $latestReleaseTag = $env:LATEST_RELEASE_TAG
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
-          echo "::set-output name=release_needed::true"
-          echo "::set-output name=version::$($versionJson.version)"
+          echo "release_needed=true" >> $GITHUB_ENV
+          echo "version=$($versionJson.version)" >> $GITHUB_ENV
         } else {
-          echo "::set-output name=release_needed::false"
+          echo "release_needed=false" >> $GITHUB_ENV
         }
       shell: pwsh
 
     - name: Debug Release Needed
       run: |
-        echo "Is release needed: ${{ needs.build.outputs.release_needed }}"
-        echo "Version to release: ${{ needs.build.outputs.version }}"
+        echo "Is release needed: $env:release_needed"
+        echo "Version to release: $env:version"
       shell: pwsh
       
     - name: Create Release
