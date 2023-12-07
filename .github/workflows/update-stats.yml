@@ -16,13 +16,10 @@ jobs:
       run: |
         $Owner = "${{ github.repository_owner }}"
         $Repo = "${{ github.repository }}"
-        echo "owner = $Owner"
-        echo "repo = $Repo"
         
         # Get latest build number
-        $uri = "https://api.github.com/repos/$Owner/$Repo/actions/runs?status=completed&conclusion=success&per_page=1"
+        $uri = "https://api.github.com/repos/$Repo/actions/runs?status=completed&conclusion=success&per_page=1"
         $headers = @{ Authorization = "token ${{ secrets.BUILD_TOKEN }}" }
-        echo "url build = " + $uri
         $responseBuild = Invoke-RestMethod -Uri $uri -Headers $headers
         $buildNumber = $responseBuild.workflow_runs[0].run_number
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
@@ -30,8 +27,7 @@ jobs:
         $NewBuildVersion = $version.$buildNumber
         
          # API request to get the latest release version number
-        $uri = "https://api.github.com/repos/$Owner/$Repo/releases/latest"
-        echo "url release = " + $uri
+        $uri = "https://api.github.com/repos/$Repo/releases/latest"
         $responseRelease = Invoke-RestMethod -Uri $uri -Headers $headers
         $NewReleaseVersion = $responseRelease.tag_name
         
