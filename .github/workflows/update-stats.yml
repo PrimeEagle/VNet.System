@@ -24,9 +24,9 @@ jobs:
         $buildNumber = $responseBuild.workflow_runs[0].run_number
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $version="$($versionJson.version)"
-        $NewBuildVersion = $version.$buildNumber
+        $NewBuildVersion = "$version.$buildNumber"
         echo "build number = $buildNumber"
-        echo "ner build version = $NewBuildVersion"
+        echo "new build version = $NewBuildVersion"
         
          # API request to get the latest release version number
         $uri = "https://api.github.com/repos/$Repo/releases/latest"
