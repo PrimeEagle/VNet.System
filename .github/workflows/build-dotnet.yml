@@ -60,8 +60,14 @@ jobs:
     - name: Compare with version.json and Write to Script
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        $latestReleaseTag = $env:LATEST_RELEASE_TAG
-        if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
+        $latestReleaseTag = ""
+        try {
+          $latestReleaseResponse = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"}
+          $latestReleaseTag = $latestReleaseResponse.tag_name
+        } catch {
+          echo "No latest release found"
+        }
+        if ($latestReleaseTag -ne $versionJson.version) {
           "`$release_needed='true'" | Out-File -FilePath release-info.ps1 -Encoding UTF8
           "`$version='$($versionJson.version)'" | Add-Content -Path release-info.ps1
         } else {
