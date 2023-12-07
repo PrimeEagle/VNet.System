@@ -48,12 +48,8 @@ jobs:
 
         $versionJson = Get-Content 'version-nuget.json' | ConvertFrom-Json
         $NewNugetVersion ="$($versionJson.version)"   
-
-        # Set the NuGet.Config to use
-        $Env:NUGET_CONFIG = $NugetConfigPath
-        echo "list "
-        nuget list -Source "github" -ConfigFile $Env:RUNNER_TEMP/NuGet.Config
-
+        echo "NuGet version = $NewNugetVersion"
+        
         # Patterns to identify the badge lines
         $BuildPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/Latest_Build-v[0-9]+(\.[0-9]+){0,3}-lightblue\)"
         $ReleasePattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/Latest_Release-v[0-9]+(\.[0-9]+){0,2}-blue\)"
