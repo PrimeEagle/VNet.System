@@ -55,10 +55,10 @@ jobs:
             $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"}
             $versionJson = Get-Content 'version.json' | ConvertFrom-Json
             if ($versionJson.version -ne $latest_release.tag_name) {
-                echo "::set-env name=RELEASE_NEEDED::true"
+                echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
             }
         } catch {
-            echo "::set-env name=RELEASE_NEEDED::true"
+            echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
         }
       shell: pwsh
       env:
