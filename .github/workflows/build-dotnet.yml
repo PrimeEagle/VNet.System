@@ -48,18 +48,14 @@ jobs:
       run: echo "Run number $env:GITHUB_RUN_NUMBER"
       shell: pwsh
 
-    - name: Check Latest Release
+    - name: Get Latest Release
       id: latest_release
       run: |
         $latest_release = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"}
-        if ($latest_release.message -eq "Not Found") {
+        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+
+        if ($latest_release.id -eq $null -or $versionJson.version -ne $latest_release.tag_name) {
           Write-Host "::set-env name=RELEASE_NEEDED::true"
-        } else {
-          $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-          $release_version = $latest_release.tag_name
-          if ($versionJson.version -ne $release_version) {
-            Write-Host "::set-env name=RELEASE_NEEDED::true"
-          }
         }
       continue-on-error: true
 
