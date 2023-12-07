@@ -1,10 +1,12 @@
 name: Update Stats
 
 on:
+  #push:
+  #pull_request:
   workflow_dispatch:
 
 jobs:
-  update-readme:
+  update-stats:
     runs-on: windows-latest
     steps:
     - name: Check out repository
