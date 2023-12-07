@@ -20,16 +20,16 @@ jobs:
         # Get latest build number
         $uri = "https://api.github.com/repos/$Owner/$Repo/actions/runs?status=completed&conclusion=success&per_page=1"
         $headers = @{ Authorization = "token ${{ secrets.BUILD_TOKEN }}" }
-        $response = Invoke-RestMethod -Uri $uri -Headers $headers
-        $buildNumber = $response.workflow_runs[0].run_number
+        $responseBuild = Invoke-RestMethod -Uri $uri -Headers $headers
+        $buildNumber = $responseBuild.workflow_runs[0].run_number
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $version="$($versionJson.version)"
         $NewBuildVersion = $version.$buildNumber
         
          # API request to get the latest release version number
         $uri = "https://api.github.com/repos/$Owner/$Repo/releases/latest"
-        $response = Invoke-RestMethod -Uri $uri -Headers $headers
-        $NewReleaseVersion = $response.tag_name
+        $responseRelease = Invoke-RestMethod -Uri $uri -Headers $headers
+        $NewReleaseVersion = $responseRelease.tag_name
         
         $NewDotNetVersion = "${{ secrets.DOTNET_VERSION }}"
         $NewDotNetVersion = $NewDotNetVersion.Replace(".*", "")
