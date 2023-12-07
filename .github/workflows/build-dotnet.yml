@@ -68,6 +68,9 @@ jobs:
         Write-Host "Creating a new release..."
         $release_title = "Release ${{ github.run_number }}"
         $release_body = "Automated release created by GitHub Actions"
+        Write-Host "Tag name: ${{ github.run_number }}"
+        Write-Host "Release title: $release_title"
+        Write-Host "Release body: $release_body"
         Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases" -Method Post -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}";"Accept"="application/vnd.github.v3+json"} -ContentType "application/json" -Body @"
         {
           "tag_name": "${{ github.run_number }}",
@@ -77,3 +80,4 @@ jobs:
           "prerelease": false
         }
         "@
+    
