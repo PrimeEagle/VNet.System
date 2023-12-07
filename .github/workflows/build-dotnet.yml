@@ -1,4 +1,4 @@
-name: .NET Build and Version
+name: Build .NET
 
 on:
   push:
@@ -61,28 +61,24 @@ jobs:
       if: steps.latest_release.outputs.data.tag_name != 'null'
       run: echo "LATEST_RELEASE_TAG=${{ steps.latest_release.outputs.data.tag_name }}" >> $GITHUB_ENV
 
-    - name: Set Release Needed Flag
-      if: steps.latest_release.outputs.data.tag_name == 'null'
-      run: echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
-
-    - name: Compare with version.json
+    - name: Calculate New Version
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $latestReleaseTag = $env:LATEST_RELEASE_TAG
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
-          echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
+          echo "new_version=${{ github.run_number }}" >> $GITHUB_ENV
         }
       shell: pwsh
       env:
         DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
 
     - name: Create Release
-      if: env.RELEASE_NEEDED == 'true'
+      if: env.new_version != ''
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.compare_versions.outputs.new_version }}
-        release_name: Release ${{ steps.compare_versions.outputs.new_version }}
+        tag_name: ${{ env.new_version }}
+        release_name: Release ${{ env.new_version }}
         draft: false
         prerelease: false
