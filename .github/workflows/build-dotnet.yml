@@ -57,50 +57,38 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
 
-    - name: Compare with version.json
-      id: compare_versions
+    - name: Compare with version.json and Write to Script
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $latestReleaseTag = $env:LATEST_RELEASE_TAG
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
-          echo "release_needed=true" >> $GITHUB_ENV
-          echo "::set-output name=release_needed::true"
-          echo "::set-output name=version::$($versionJson.version)"
+          "release_needed=true" | Out-File -FilePath release-info.ps1 -Encoding UTF8
+          "version=$($versionJson.version)" | Add-Content -Path release-info.ps1
         } else {
-          echo "release_needed=false" >> $GITHUB_ENV
-          echo "::set-output name=release_needed::false"
+          "release_needed=false" | Out-File -FilePath release-info.ps1 -Encoding UTF8
         }
       shell: pwsh
 
-    - name: Debug Release Needed
-      run: |
-        echo "Is release needed: ${{ steps.compare_versions.outputs.release_needed }}"
-        echo "Version to release: ${{ steps.compare_versions.outputs.version }}"
-      shell: pwsh
-      
     - name: Create Release
-      if: env.RELEASE_NEEDED == 'true'
       run: |
-        try {
-            $tag_name = $env:VERSION
-            $release_name = "Release $tag_name"
-            $release_notes = "Release $tag_name"
+          . .\release-info.ps1
+          if ($release_needed -eq 'true') {
+          $tag_name = $version
+          $release_name = "Release $tag_name"
+           $release_notes = "Release $tag_name"
             
-            $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases"
-            $headers = @{
-                Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"
-                Accept = "application/vnd.github.v3+json"
-            }
-            $body = @{
-                tag_name = $tag_name
-                name = $release_name
-                body = $release_notes
-            }
+           $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases"
+           $headers = @{
+               Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"
+               Accept = "application/vnd.github.v3+json"
+           }
+           $body = @{
+               tag_name = $tag_name
+               name = $release_name
+               body = $release_notes
+           }
             
-            Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body ($body | ConvertTo-Json)
-        } catch {
-            echo "Error creating release: $_"
-        }
+           Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body ($body | ConvertTo-Json)
       shell: pwsh
       env:
         DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
