@@ -18,6 +18,7 @@ jobs:
         $NewReleaseVersion = "v2.0"  # Replace with your dynamic version variable for release
         $NewDotNetVersion = "${{ secrets.DOTNET_VERSION }}"    # Replace with your dynamic version variable for .NET
         $NewDotNetVersion = $NewDotNetVersion.Replace(".*", "")
+        echo ".net ver = " + $NewDotNetVersion
         $NewNugetVersion = "v3.0"    # Replace with your dynamic version variable for NuGet
 
         # Patterns to identify the badge lines
@@ -36,8 +37,8 @@ jobs:
 
         # Check if there are changes and commit them
         if (git status --porcelain) {
-          git config --global user.name 'Your Name'
-          git config --global user.email 'your-email@example.com'
+          git config --global user.name 'PrimeEagle'
+          git config --global user.email 'misc@hiddendragon.com'
           git add README.md
           git commit -m "Update version badges in README"
           git push
