@@ -47,10 +47,10 @@ jobs:
         $NugetPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/NuGet_Package-v[0-9]+(\.[0-9]+){0,2}-blue\)"
 
         # New badge lines with updated versions
-        $BuildReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Build-$NewBuildVersion-lightblue)"
-        $ReleaseReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Release-$NewReleaseVersion-blue)"
+        $BuildReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Build-v$NewBuildVersion-lightblue)"
+        $ReleaseReplacement = "![Static Badge](https://img.shields.io/badge/Latest_Release-v$NewReleaseVersion-blue)"
         $DotNetReplacement = "![Static Badge](https://img.shields.io/badge/.NET-$NewDotNetVersion-darkblue)"
-        $NugetReplacement = "![Static Badge](https://img.shields.io/badge/NuGet_Package-$NewNugetVersion-blue)"
+        $NugetReplacement = "![Static Badge](https://img.shields.io/badge/NuGet_Package-v$NewNugetVersion-blue)"
 
         # Update the README.md
         $readmeContent = Get-Content README.md
