@@ -23,8 +23,8 @@ jobs:
         $response = Invoke-RestMethod -Uri $uri -Headers $headers
         $buildNumber = $response.workflow_runs[0].run_number
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        $version='$($versionJson.version)
-        $NewBuildVersion = "$version.$buildNumber"
+        $version="$($versionJson.version)"
+        $NewBuildVersion = $version.$buildNumber
         
          # API request to get the latest release version number
         $uri = "https://api.github.com/repos/$Owner/$Repo/releases/latest"
