@@ -66,19 +66,19 @@ jobs:
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
         $latestReleaseTag = $env:LATEST_RELEASE_TAG
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
-          echo "new_version=${{ github.run_number }}" >> $GITHUB_ENV
+          echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
         }
       shell: pwsh
       env:
         DOTNET_ROOT: C:\Users\runneradmin\AppData\Local\Microsoft\dotnet
 
     - name: Create Release
-      if: env.new_version != ''
+      if: env.RELEASE_NEEDED == 'true'
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.new_version }}
-        release_name: Release ${{ env.new_version }}
+        tag_name: ${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
         draft: false
         prerelease: false
