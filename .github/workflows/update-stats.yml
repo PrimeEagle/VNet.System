@@ -48,8 +48,7 @@ jobs:
 
         # Create a temporary NuGet.Config file with GitHub Packages source and credentials
         $NugetConfigPath = "$Env:RUNNER_TEMP\NuGet.Config"
-        $NugetConfigContent = @"
-          <?xml version="1.0" encoding="utf-8"?>
+        $NugetConfigContent = @"<?xml version="1.0" encoding="utf-8"?>
           <configuration>
           <packageSources>
           <add key="github" value="https://nuget.pkg.github.com/$Owner/index.json" />
