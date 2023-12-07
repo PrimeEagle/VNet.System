@@ -1,4 +1,4 @@
-name: Create NuGet Package
+name: Biuld NuGet
 
 on:
   workflow_dispatch:
