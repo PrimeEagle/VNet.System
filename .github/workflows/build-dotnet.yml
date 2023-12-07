@@ -79,7 +79,7 @@ jobs:
             
             $uri = "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases"
             $headers = @{
-              Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}"
+              Authorization = "Bearer ${{ secrets.BUILD_TOKEN }}"
               Accept = "application/vnd.github.v3+json"
             }
             $body = @{
