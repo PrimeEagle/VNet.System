@@ -48,21 +48,31 @@ jobs:
       run: echo "Run number $env:GITHUB_RUN_NUMBER"
       shell: pwsh
 
+    # Step to check the latest release and extract tag name
     - name: Check Latest Release
       id: latest_release
+      uses: octokit/request-action@v2.x
+      with:
+        route: GET /repos/PrimeEagle/{repo}/releases/latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
+    
+    - name: Set Latest Release Tag
+      if: success()
+      run: echo "LATEST_RELEASE_TAG=${{ steps.latest_release.outputs.data.tag_name }}" >> $GITHUB_ENV
+    
+    - name: Set No Release Flag
+      if: failure()
+      run: echo "NO_RELEASE_FOUND=true" >> $GITHUB_ENV
+    
+    # Step to compare with version.json
+    - name: Compare with version.json
       run: |
-        try {
-            $latest_release_json = Invoke-RestMethod -Uri "https://api.github.com/repos/PrimeEagle/${{ secrets.DOTNET_SOLUTION }}/releases/latest" -Headers @{Authorization="Bearer ${{ secrets.GITHUB_TOKEN }}"; "Accept"="application/vnd.github.v3+json"}
-            $latest_release = $latest_release_json | ConvertTo-Json -Depth 100
-            echo "Latest Release Tag: $($latest_release.tag_name)"
-            $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-            echo "Version from version.json: $($versionJson.version)"
-            echo "::set-env name=VERSION::$($versionJson.version)"
-            if ($versionJson.version -ne ($latest_release | ConvertFrom-Json).tag_name) {
-                echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
-            }
-        } catch {
-            echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
+        $versionJson = Get-Content 'version.json' | ConvertFrom-Json
+        $latestReleaseTag = $env:LATEST_RELEASE_TAG
+        if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
+          echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
         }
       shell: pwsh
       env:
