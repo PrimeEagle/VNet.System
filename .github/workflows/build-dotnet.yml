@@ -12,8 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-          submodules: 'recursive'
-          token: ${{ secrets.BUILD_TOKEN }}
+        submodules: 'recursive'
+        token: ${{ secrets.BUILD_TOKEN }}
 
     - name: Install .NET 8.0 SDK
       run: |
@@ -36,13 +36,13 @@ jobs:
     - name: Restore NuGet packages
       run: dotnet restore ${{ secrets.DOTNET_SOLUTION }}
       env:
-            NUGET_AUTH_TOKEN: ${{ secrets.BUILD_TOKEN }}
-            UsePackageReferences: true
+        NUGET_AUTH_TOKEN: ${{ secrets.BUILD_TOKEN }}
+        UsePackageReferences: true
               
     - name: Build with version
       run: dotnet build ${{ secrets.DOTNET_SOLUTION }} /p:BuildNumber=${{ github.run_number }}
       env:
-            UsePackageReferences: true
+        UsePackageReferences: true
       
     - name: Print Run Number
       run: echo "Run number $env:GITHUB_RUN_NUMBER"
@@ -56,15 +56,15 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
-    
+
     - name: Set Latest Release Tag
-      if: success()
+      if: steps.latest_release.outputs.data.tag_name != 'null'
       run: echo "LATEST_RELEASE_TAG=${{ steps.latest_release.outputs.data.tag_name }}" >> $GITHUB_ENV
-    
-    - name: Set No Release Flag
-      if: failure()
-      run: echo "NO_RELEASE_FOUND=true" >> $GITHUB_ENV
-    
+
+    - name: Set Release Needed Flag
+      if: steps.latest_release.outputs.data.tag_name == 'null'
+      run: echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
+
     - name: Compare with version.json
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
