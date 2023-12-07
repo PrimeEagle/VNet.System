@@ -60,10 +60,15 @@ jobs:
     - name: Compare with version.json
       run: |
         $versionJson = Get-Content 'version.json' | ConvertFrom-Json
-        $latestReleaseTag = ${{ steps.latest_release.outputs.data.tag_name }}
+        echo "Version from version.json: $($versionJson.version)"
+        $latestReleaseTag = $env:LATEST_RELEASE_TAG
+        echo "Latest release tag: $latestReleaseTag"
         if (-not $latestReleaseTag -or $latestReleaseTag -ne $versionJson.version) {
           echo "RELEASE_NEEDED=true" >> $GITHUB_ENV
           echo "VERSION=$($versionJson.version)" >> $GITHUB_ENV
+          echo "Release needed set to true"
+        } else {
+          echo "No new release needed"
         }
       shell: pwsh
       env:
