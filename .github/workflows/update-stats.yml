@@ -70,6 +70,7 @@ jobs:
         $DotNetPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/\.NET-[0-9]+(\.[0-9]+){0,2}-darkblue\)"
         $NugetPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/NuGet_Package-v[0-9]+(\.[0-9]+){0,2}-blue\)"
         $NugetErrorPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/NuGet_Package-$nugetErrorMsg-darkred\)"
+        $LicensePattern = "![GitHub License](https://img.shields.io/github/license/.*)"
 
         # New badge lines with updated versions
         if($latestBuildError) {
@@ -87,10 +88,12 @@ jobs:
         else {
           $NugetReplacement = "![Static Badge](https://img.shields.io/badge/NuGet_Package-v$NewNugetVersion-blue)"
         }
+
+        $LicenseReplacement = "![GitHub License](https://img.shields.io/github/license/$Repo)"
         
         # Update the README.md
         $readmeContent = Get-Content README.md
-        $readmeContent -replace $ReleasePattern, $ReleaseReplacement -replace $DotNetPattern, $DotNetReplacement -replace $NugetPattern, $NugetReplacement -replace $NugetErrorPattern, $NugetReplacement -replace $BuildPattern, $BuildReplacement -replace $BuildErrorPattern, $BuildReplacement | Set-Content README.md
+        $readmeContent -replace $ReleasePattern, $ReleaseReplacement -replace $DotNetPattern, $DotNetReplacement -replace $NugetPattern, $NugetReplacement -replace $NugetErrorPattern, $NugetReplacement -replace $BuildPattern, $BuildReplacement -replace $BuildErrorPattern, $BuildReplacement -replace $LicensePattern, $LicenseReplacement | Set-Content README.md
 
         # Check if there are changes and commit them
         if (git status --porcelain) {
