@@ -70,7 +70,7 @@ jobs:
         $DotNetPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/\.NET-[0-9]+(\.[0-9]+){0,2}-darkblue\)"
         $NugetPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/NuGet_Package-v[0-9]+(\.[0-9]+){0,2}-blue\)"
         $NugetErrorPattern = "!\[Static Badge\]\(https://img\.shields\.io/badge/NuGet_Package-$nugetErrorMsg-darkred\)"
-        $LicensePattern = "![GitHub License](https://img.shields.io/github/license/.*)"
+        $LicensePattern = "!\[GitHub License]\(https://img.shields.io/github/license/[^\)]*\)"
 
         # New badge lines with updated versions
         if($latestBuildError) {
