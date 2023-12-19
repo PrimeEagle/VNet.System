@@ -549,11 +549,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\My Code\\VNet-Solution\\VNet.System\\VNet.System\\VNet.System.csproj",
+      "projectUniqueName": "D:\\My Code\\VNet.System\\VNet.System\\VNet.System.csproj",
       "projectName": "VNet.System",
-      "projectPath": "D:\\My Code\\VNet-Solution\\VNet.System\\VNet.System\\VNet.System.csproj",
+      "projectPath": "D:\\My Code\\VNet.System\\VNet.System\\VNet.System.csproj",
       "packagesPath": "C:\\Users\\johnv\\.nuget\\packages\\",
-      "outputPath": "D:\\My Code\\VNet-Solution\\VNet.System\\VNet.System\\obj\\",
+      "outputPath": "D:\\My Code\\VNet.System\\VNet.System\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

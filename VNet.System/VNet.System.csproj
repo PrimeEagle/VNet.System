@@ -6,6 +6,25 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>VNet.System</PackageId>
+		<!--<Version>1.0.0</Version>-->
+		<Authors>PrimeEagle</Authors>
+		<!--<Company>Your Company</Company>-->
+		<Product>VNet.System</Product>
+		<Description>System level class library which includes an event aggregator, delayed callback manager, plugin architecture for Lua and C#, culture and localization manager, temp file manager, and custom data types for dealing with percentages.</Description>
+		<PackageTags>dotnet;dotnet-core;dotnet-library;event;plugin;culture;localization;temp-file;percentage</PackageTags>
+		<PackageReleaseNotes>Add NuGet metadata.</PackageReleaseNotes>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/PrimeEagle/VNet.System</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/PrimeEagle/VNet.System</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>VNet.System</AssemblyName>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
