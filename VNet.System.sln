@@ -12,6 +12,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".version", ".version", "{C0
 		.version\version.json = .version\version.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{E03CDCE9-F209-49B9-A660-B8E2EEF44F9C}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-dotnet.yml = .github\workflows\build-dotnet.yml
+		.github\workflows\create-nuget.yml = .github\workflows\create-nuget.yml
+		.github\workflows\update-stats.yml = .github\workflows\update-stats.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".img", ".img", "{F0772BA7-9D21-4B56-8A47-8050D6AB77A3}"
+	ProjectSection(SolutionItems) = preProject
+		.img\icon.png = .img\icon.png
+		.img\logo.png = .img\logo.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{41C9425A-39EF-4847-9CAB-A51381A79152}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
