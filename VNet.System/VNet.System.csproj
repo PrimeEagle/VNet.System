@@ -15,7 +15,7 @@
 		<Description>System level class library which includes an event aggregator, delayed callback manager, plugin architecture for Lua and C#, culture and localization manager, temp file manager, and custom data types for dealing with percentages.</Description>
 		<PackageTags>dotnet;dotnet-core;dotnet-library;event;plugin;culture;localization;temp-file;percentage</PackageTags>
 		<PackageReleaseNotes>Add NuGet metadata.</PackageReleaseNotes>
-		<PackageIcon>.img/icon.png</PackageIcon>
+		<PackageIcon>./.img/icon.png</PackageIcon>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/PrimeEagle/VNet.System</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/PrimeEagle/VNet.System</RepositoryUrl>
