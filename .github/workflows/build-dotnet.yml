@@ -50,12 +50,12 @@ jobs:
         nuget sources Add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username ${{ github.repository_owner }} -Password ${{ secrets.BUILD_TOKEN }}
       
     - name: Restore NuGet packages
-      run: dotnet restore $env:GITHUB_ENV /p:ServerBuild=true
+      run: dotnet restore $env:GITHUB_ENV.sln /p:ServerBuild=true
       env:
             NUGET_AUTH_TOKEN: ${{ secrets.BUILD_TOKEN }}
               
     - name: Build with version
-      run: dotnet build $env:GITHUB_ENV /p:BuildNumber=${{ github.run_number }} /p:ServerBuild=true
+      run: dotnet build $env:GITHUB_ENV.sln /p:BuildNumber=${{ github.run_number }} /p:ServerBuild=true
       env:
             UsePackageReferences: true
       
