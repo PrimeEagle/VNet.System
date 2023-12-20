@@ -6,4 +6,6 @@
 
 <img src="https://github.com/PrimeEagle/VNet.System/blob/main/.img/logo.png?raw=true" width="250" />
 
-Class library of sytem related functions, such as event aggreation and localization.
+System level class library which includes an event aggregator, delayed callback manager, plugin architecture for Lua and C#, culture and localization manager, temp file manager, and custom data types for dealing with percentages.
+
+This is a standalone class library, but is also available as part of the full [VNet](https://github.com/PrimeEagle/VNet) library.
