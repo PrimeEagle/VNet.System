@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - 'README.md'
+      - 'LICENSE'
       - '.github/workflows/*.yml'
       - '.version/*.json'
       - '.gitignore'
