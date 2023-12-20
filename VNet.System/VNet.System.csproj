@@ -8,14 +8,12 @@
 
 	<PropertyGroup>
 		<PackageId>VNet.System</PackageId>
-		<!--<Version>1.0.0</Version>-->
 		<Authors>PrimeEagle</Authors>
-		<!--<Company>Your Company</Company>-->
 		<Product>VNet.System</Product>
 		<Description>System level class library which includes an event aggregator, delayed callback manager, plugin architecture for Lua and C#, culture and localization manager, temp file manager, and custom data types for dealing with percentages.</Description>
 		<PackageTags>dotnet;dotnet-core;dotnet-library;event;plugin;culture;localization;temp-file;percentage</PackageTags>
 		<PackageReleaseNotes>Add NuGet metadata.</PackageReleaseNotes>
-		<PackageIcon>./.img/icon.png</PackageIcon>
+		<PackageIcon>icon.png</PackageIcon>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/PrimeEagle/VNet.System</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/PrimeEagle/VNet.System</RepositoryUrl>
@@ -24,10 +22,6 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>VNet.System</AssemblyName>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="./.img/icon.png" Pack="true" PackagePath="" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
@@ -43,6 +37,10 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(ServerBuild)' == ''">
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ServerBuild)' == ''">
