@@ -17,7 +17,7 @@ using System.Reflection;
     "anager, plugin architecture for Lua and C#, culture and localization manager, te" +
     "mp file manager, and custom data types for dealing with percentages.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ba647308a91c3045a4aab1067561a305066d817")]
 [assembly: System.Reflection.AssemblyProductAttribute("VNet.System")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VNet.System")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

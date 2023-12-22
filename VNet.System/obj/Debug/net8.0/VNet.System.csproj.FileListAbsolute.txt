@@ -37,3 +37,16 @@ D:\My Code\VNet-Solution\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.dl
 D:\My Code\VNet-Solution\VNet.System\VNet.System\obj\Debug\net8.0\refint\VNet.System.dll
 D:\My Code\VNet-Solution\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.pdb
 D:\My Code\VNet-Solution\VNet.System\VNet.System\obj\Debug\net8.0\ref\VNet.System.dll
+D:\My Code\VNet\VNet.System\VNet.System\bin\Debug\net8.0\VNet.System.deps.json
+D:\My Code\VNet\VNet.System\VNet.System\bin\Debug\net8.0\VNet.System.dll
+D:\My Code\VNet\VNet.System\VNet.System\bin\Debug\net8.0\VNet.System.pdb
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.csproj.AssemblyReference.cache
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.GeneratedMSBuildEditorConfig.editorconfig
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.AssemblyInfoInputs.cache
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.AssemblyInfo.cs
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.csproj.CoreCompileInputs.cache
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.sourcelink.json
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.dll
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\refint\VNet.System.dll
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\VNet.System.pdb
+D:\My Code\VNet\VNet.System\VNet.System\obj\Debug\net8.0\ref\VNet.System.dll
